@@ -3,6 +3,7 @@ import home from './home.module.less'
 
 class Header extends Component {
   render() {
+
     return (
       <div className={home.container}>
         <i>网易云音乐</i>
@@ -34,11 +35,13 @@ class Tab extends Component {
   }
 
   render() {
-
+    alert(this.a)
     let tabs = this.state.tabs.map((item, index) => {
       return (<li
-        onClick={() => this.toggelTab(index)}
-        className={index === this.state.selectedIndex ? home.active : ''}>{item} {this.selectedTab(index)}
+        key={index}
+        onClick={this.toggelTab.bind(this, index)}
+        className={index === this.state.selectedIndex ? home.active : ''}>
+        {item} {this.selectedTab(index)}
       </li>)
     })
 
