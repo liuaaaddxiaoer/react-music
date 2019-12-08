@@ -1,5 +1,54 @@
 import React, { Component } from 'react'
-import home from './Home.module.css'
+import home from './home.module.less'
+
+class Header extends Component {
+  render() {
+    return (
+      <div className={home.container}>
+        <i>网易云音乐</i>
+      </div>
+    )
+  }
+}
+
+class Tab extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      tabs: ['推荐音乐', '热歌榜', '搜索'],
+      selectedIndex: 0,
+    }
+  }
+
+  selectedTab(index) {
+    return (index === this.state.selectedIndex ? <div className={home.line} /> : null)
+  }
+
+  toggelTab(index) {
+    this.setState(_ => {
+      return {
+        selectedIndex: index
+      }
+    })
+  }
+
+  render() {
+
+    let tabs = this.state.tabs.map((item, index) => {
+      return (<li
+        onClick={() => this.toggelTab(index)}
+        className={index === this.state.selectedIndex ? home.active : ''}>{item} {this.selectedTab(index)}
+      </li>)
+    })
+
+    return (
+      <ul className={home.tab}>
+        {tabs}
+      </ul>
+    )
+  }
+}
 
 class Home extends Component {
 
@@ -12,7 +61,10 @@ class Home extends Component {
 
   render() {
     return (
-      <ul className={home.container}>{this.state.items.map(item => <li className={home.item}>{item}</li>)}</ul>
+      <div>
+        <Header />
+        <Tab />
+      </div>
     )
   }
 

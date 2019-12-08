@@ -1,0 +1,45 @@
+@import './css/common.less';
+
+.container {
+  background: @mainColor;
+  height: 84px;
+  display: flex;
+  padding: 0 15px;
+  align-items: center;
+
+  i {
+    color: white;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+}
+
+.tab {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid @dividerLineColor;
+
+  li {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    color: @textBlackColor;
+  }
+
+  .line {
+    width: 40px;
+    height: 3px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -2px);
+    background: @mainColor;
+  }
+
+  .active {
+    color: @textRedColor;
+  }
+}
