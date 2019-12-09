@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import home from './home.module.less'
+import {Route} from 'react-router-dom'
+import Recommend from './recommand'
+import Hot from './hot'
+
 
 class Header extends Component {
   render() {
@@ -23,19 +27,35 @@ class Tab extends Component {
   }
 
   selectedTab(index) {
-    return (index === this.state.selectedIndex ? <div className={home.line} /> : null)
+
+    const tab = (
+      <div className={home.line} />
+    )
+
+    return (index === this.state.selectedIndex ? tab : null)
   }
 
   toggelTab(index) {
-    this.setState(_ => {
-      return {
-        selectedIndex: index
-      }
+    
+    // if (this.state.selectedIndex === index) return
+
+    // this.setState(_ => {
+    //   return {
+    //     selectedIndex: index
+    //   }
+    // })
+    // this.props.toggelTab(index)
+    this.$http.loginPhone({
+      phone: 17801063691,
+      password: 'xiaoer2'
+    }).then(res => {
+      
+    }).catch(err => {
+
     })
   }
 
   render() {
-    alert(this.a)
     let tabs = this.state.tabs.map((item, index) => {
       return (<li
         key={index}
@@ -58,16 +78,26 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: [1, 2, 3, 4, 5, 6]
+      items: ['recommend', 'hot', 'search']
     }
   }
 
+  toggelTab(index) {
+    console.log(index)
+    this.props.history.push(`${this.props.match.path}/${this.state.items[index]}`)
+  }
+
   render() {
+    console.log(1)
+    console.log(`${this.props.match.path}/hot`)
     return (
-      <div>
+      <>
         <Header />
-        <Tab />
-      </div>
+        <Tab toggelTab={this.toggelTab.bind(this)}/>
+        <Route path={this.props.match.path} exact component={Recommend}></Route>
+        <Route path={`${this.props.match.path}/${this.state.items[1]}`} exact component={Hot}></Route>
+        <Route path={`${this.props.match.path}/${this.state.items[0]}`} exact component={Recommend}></Route>
+      </>
     )
   }
 

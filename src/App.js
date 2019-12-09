@@ -1,13 +1,17 @@
 import React from 'react';
 import Home from './home'
-
-
-
+import {Route, HashRouter, Redirect } from 'react-router-dom';
 
 
 function App() {
+
   return (
-    <Home name="haha" />
+    <HashRouter>
+        <Route path="/" exact component={Home} />
+        <Route path="/home" component={Home} />
+        <Redirect to="/home"/>
+    </HashRouter>
+    
   );
 }
 
