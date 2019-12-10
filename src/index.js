@@ -3,18 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {HashRouter} from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import $http from './http/api'
+import './resources/font/iconfont.css'
 
 // 注册全局api
 React.Component.prototype.$http = $http
 
 function router() {
-    return (
-        <HashRouter>
-            <App />
-        </HashRouter>
-    )
+  return (
+    <HashRouter>
+      <App />
+    </HashRouter>
+  )
 }
 
 ReactDOM.render(router(), document.getElementById('root'));

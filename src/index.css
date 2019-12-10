@@ -12,6 +12,17 @@ code {
     monospace;
 }
 
+input {
+  outline: none;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+}
+
+input::placeholder {
+  color: #999
+}
+
 * {
   margin: 0;
   padding: 0;

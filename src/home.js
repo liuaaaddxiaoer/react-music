@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import home from './home.module.less'
-import {Route} from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import Recommend from './recommand'
 import Hot from './hot'
+import Search from './pages/search'
 
 
 class Header extends Component {
@@ -36,23 +37,16 @@ class Tab extends Component {
   }
 
   toggelTab(index) {
-    
-    // if (this.state.selectedIndex === index) return
 
-    // this.setState(_ => {
-    //   return {
-    //     selectedIndex: index
-    //   }
-    // })
-    // this.props.toggelTab(index)
-    this.$http.loginPhone({
-      phone: 17801063691,
-      password: 'xiaoer2'
-    }).then(res => {
-      
-    }).catch(err => {
+    if (this.state.selectedIndex === index) return
 
+    this.setState(_ => {
+      return {
+        selectedIndex: index
+      }
     })
+    this.props.toggelTab(index)
+
   }
 
   render() {
@@ -93,10 +87,11 @@ class Home extends Component {
     return (
       <>
         <Header />
-        <Tab toggelTab={this.toggelTab.bind(this)}/>
-        <Route path={this.props.match.path} exact component={Recommend}></Route>
+        <Tab toggelTab={this.toggelTab.bind(this)} />
+        <Route path={this.props.match.path} exact component={Search}></Route>
         <Route path={`${this.props.match.path}/${this.state.items[1]}`} exact component={Hot}></Route>
         <Route path={`${this.props.match.path}/${this.state.items[0]}`} exact component={Recommend}></Route>
+        <Route path={`${this.props.match.path}/${this.state.items[2]}`} exact component={Search}></Route>
       </>
     )
   }
