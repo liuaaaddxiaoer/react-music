@@ -21,7 +21,7 @@ export default {
    * @param {*} [params={}]
    * @returns
    */
-  search(params = {}) {
-    return http(URL.SEARCH, params, 'GET')
+  search(params = {}, isHot = false) {
+    return http(isHot ? URL.SEARCH : URL.SEARCH_HOT, { type: 'mobile', ...params }, 'GET')
   }
 }

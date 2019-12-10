@@ -1,3 +1,5 @@
+@import '../../css//common.less';
+
 .container {
   display: flex;
   flex-direction: column;
@@ -29,20 +31,44 @@
     input {
       padding-left: 10px;
       font-size: 14px;
+      flex: 1;
+      height: 100%;
     }
   }
 }
 
 .hot_container {
-  height: 20px;
-  background: cyan;
+  padding: 20px 12px;
+  display: flex;
+
   .hot_search_container {
     display: flex;
     flex-direction: column;
   }
 
+  h3 {
+    color: #666;
+    font-weight: normal;
+    font-size: 15px;
+  }
+
   .hot_list {
     display: flex;
     flex-wrap: wrap;
+    padding-top: 10px;
+
+    li {
+      font-weight: 400;
+      height: 32px;
+      border-radius: 16px;
+      line-height: 32px;
+      padding: 0 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: @textBlackColor;
+      box-sizing: content-box;
+      border: 1px solid #d3d4da;
+    }
   }
 }
