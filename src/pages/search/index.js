@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './index.module.less'
 import PropTypes from 'prop-types'
+import Loading from '../../resources/images/loading.gif'
 
 class HotSearch extends React.Component {
 
@@ -133,9 +134,81 @@ class HotSearch extends React.Component {
 
 // eslint-disable-next-line
 class KeywordSearch extends React.Component {
+
+  state = {
+    allMatch: []
+  }
+
+  static propTypes = {
+    search: PropTypes.string.isRequired,
+    show: PropTypes.bool
+  }
+
+  static defaultProps = {
+    show: true
+  }
+
+  componentDidUpdate(pre, stat) {
+    if (this.props.search && this.props.search !== pre.search) {
+      this.triggerSearch()
+    }
+  }
+
+  triggerSearch() {
+
+    const search = this.props.search || ''
+
+    this.$http.search({
+      keywords: search
+    }, search).then(res => {
+
+      const result = res.result
+      if (res.code === 200 && result) {
+
+        // 判断是hot还是suggest
+        if (result.allMatch) {
+          this.setState({
+            allMatch: result.allMatch
+          })
+        }
+      }
+    })
+  }
+
   render() {
     return (
-      <div>1</div>
+      <div
+        className={style.Keyword_search}
+        style={{ display: this.props.show ? 'flex' : 'none' }}>
+        <h3>{`搜索 "${this.props.search}"`}</h3>
+        {
+          <div
+            className={style.loading}
+            style={{
+              backgroundImage: `url(${Loading}) `,
+              display: this.state.allMatch.length > 0 ? 'none' : 'block'
+            }}
+          />
+        }
+        <div className={style.wrapper}>
+          {/* 搜索结果 */}
+          {
+            this.state.allMatch
+            && this.state.allMatch.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className={style.item}
+                >
+                  <i className="iconfont icon-sousuo" />
+                  <span>{item.keyword}</span>
+                </div>
+              )
+            })
+
+          }
+        </div>
+      </div>
     )
   }
 }
@@ -197,12 +270,13 @@ export default class Search extends React.Component {
           <input
             type="text"
             placeholder="搜索歌曲、歌手、专辑"
-            onChange={this.searchChange}
+            onInput={this.searchChange}
             onKeyDown={this.searchSubmit}
           />
+          <i className="iconfont icon-guanbi1" style={{ display: this.state.search ? 'block' : 'none' }}></i>
         </div>
         <HotSearch search={this.state.search} show={mode === 1} />
-        <HotSearch search={this.state.search} show={mode === 2} />
+        <KeywordSearch search={this.state.search} show={mode === 2} />
         <HotSearch search={this.state.search} show={mode === 3} />
       </div>
     )
