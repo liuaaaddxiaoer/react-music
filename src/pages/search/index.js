@@ -2,8 +2,9 @@ import React from 'react'
 import style from './index.module.less'
 import PropTypes from 'prop-types'
 
-// eslint-disable-next-line
 class HotSearch extends React.Component {
+
+  flag = 0
 
   static propTypes = {
     search: PropTypes.string.isRequired,
@@ -16,7 +17,7 @@ class HotSearch extends React.Component {
 
   state = {
     hots: [],
-    historys: [],
+    histories: [],
   }
 
   componentDidMount() {
@@ -30,7 +31,30 @@ class HotSearch extends React.Component {
     }
   }
 
+  triggerHistory() {
+    const utils = this.$utils.storage
+    let histories = utils.getItem('history')
+    const datas = histories && JSON.parse(histories)
+    if (datas) {
+      this.setState({
+        histories: datas
+      })
+    }
+  }
+
   triggerSearch() {
+    console.log("ok")
+    // 防止频繁调用
+    console.log("flag is", this.flag)
+    if (this.flag && this.flag === 1) return
+    this.flag = 1
+    console.log('flag ok', this.flag)
+    setTimeout(() => {
+      this.flag = 0
+    }, 1000)
+
+    // 历史
+    this.triggerHistory()
 
     const search = this.props.search || ''
 
@@ -51,7 +75,29 @@ class HotSearch extends React.Component {
     })
   }
 
+  history() {
+
+    const obj =  (
+      this.state.histories 
+          && (typeof this.state.histories.map === 'function') 
+          && this.state.histories.map((item, index) => {
+            return (
+              <div className={style.history_container} key={index}>
+                <i className="iconfont icon-shijian"></i>
+                <span>{item}</span>
+                <i className="iconfont icon-guanbi"/>
+              </div>
+            )
+          })
+    )
+          
+    console.log(obj)
+
+    return obj
+  }
+
   render() {
+
     return (
       <div
         className={style.hot_container}
@@ -73,11 +119,26 @@ class HotSearch extends React.Component {
             </div>
           )
         }
+
+        {/* 历史记录 */}
+        {console.log('history is', typeof this.state.histories.map)}
+        { 
+          this.history()
+        }
+
       </div>
     )
   }
 }
 
+// eslint-disable-next-line
+class KeywordSearch extends React.Component {
+  render() {
+    return(
+      <div>1</div>
+    )
+  }
+}
 
 export default class Search extends React.Component {
 
@@ -98,13 +159,31 @@ export default class Search extends React.Component {
     })
   }
 
+  storageHistory(search) {
+    const utils = this.$utils.storage
+    let history = utils.getItem('history')
+    if (!history) {
+      utils.setItem('history', JSON.stringify([search]))   
+    } else {
+      let histories = JSON.parse(utils.getItem('history'))
+      histories.push(search)
+      histories = [...new Set(histories)]
+      utils.setItem('history', JSON.stringify(histories))
+    }
+  }
+
   searchSubmit = (e) => {
-    if (!e.target.value) return
+    const search = e.target.value
+    if (!search) return
     if (e.keyCode !== 13) return
 
+    // 存储
+    // 判断是否有如果有合并
+    this.storageHistory(search)
+    
     this.setState({
       mode: 3,
-      search: e.target.value
+      search: search
     })
   }
 

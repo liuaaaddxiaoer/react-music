@@ -4,11 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter } from 'react-router-dom'
-import $http from './http/api'
+import http from './http/api'
+import utils from './utils'
 import './resources/font/iconfont.css'
 
 // 注册全局api
-React.Component.prototype.$http = $http
+React.Component.prototype.$http = http
+
+// 注入Utils
+React.Component.prototype.$utils = utils
 
 function router() {
   return (

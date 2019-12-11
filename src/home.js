@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import home from './home.module.less'
 import { Route } from 'react-router-dom'
-import Recommend from './recommand'
+import Recommend from './recommend'
 import Hot from './hot'
 import Search from './pages/search'
+import PropTypes from 'prop-types'
 
 
 class Header extends Component {
@@ -19,12 +20,13 @@ class Header extends Component {
 
 class Tab extends Component {
 
-  constructor() {
-    super()
-    this.state = {
-      tabs: ['推荐音乐', '热歌榜', '搜索'],
-      selectedIndex: 0,
-    }
+  static propTypes = {
+    toggleTab: PropTypes.func.isRequired
+  }
+
+  state = {
+    tabs: ['推荐音乐', '热歌榜', '搜索'],
+    selectedIndex: 0, 
   }
 
   selectedTab(index) {
@@ -36,7 +38,7 @@ class Tab extends Component {
     return (index === this.state.selectedIndex ? tab : null)
   }
 
-  toggelTab(index) {
+  toggleTab(index) {
 
     if (this.state.selectedIndex === index) return
 
@@ -45,7 +47,7 @@ class Tab extends Component {
         selectedIndex: index
       }
     })
-    this.props.toggelTab(index)
+    this.props.toggleTab(index)
 
   }
 
@@ -53,7 +55,7 @@ class Tab extends Component {
     let tabs = this.state.tabs.map((item, index) => {
       return (<li
         key={index}
-        onClick={this.toggelTab.bind(this, index)}
+        onClick={this.toggleTab.bind(this, index)}
         className={index === this.state.selectedIndex ? home.active : ''}>
         {item} {this.selectedTab(index)}
       </li>)
@@ -76,18 +78,17 @@ class Home extends Component {
     }
   }
 
-  toggelTab(index) {
+  toggleTab(index) {
     console.log(index)
     this.props.history.push(`${this.props.match.path}/${this.state.items[index]}`)
   }
 
   render() {
-    console.log(1)
     console.log(`${this.props.match.path}/hot`)
     return (
       <>
         <Header />
-        <Tab toggelTab={this.toggelTab.bind(this)} />
+        <Tab toggleTab={this.toggleTab.bind(this)} />
         <Route path={this.props.match.path} exact component={Search}></Route>
         <Route path={`${this.props.match.path}/${this.state.items[1]}`} exact component={Hot}></Route>
         <Route path={`${this.props.match.path}/${this.state.items[0]}`} exact component={Recommend}></Route>
