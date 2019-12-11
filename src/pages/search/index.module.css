@@ -33,6 +33,7 @@
 .hot_container {
   padding: 20px 12px;
   display: flex;
+  flex-direction: column;
 }
 .hot_container .hot_search_container {
   display: flex;
@@ -60,4 +61,28 @@
   color: #333;
   box-sizing: content-box;
   border: 1px solid #d3d4da;
+}
+.history_container {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+.history_container i {
+  color: #999;
+  font-size: 20px;
+}
+.history_container span {
+  flex: 1;
+  margin-left: 8px;
+  position: relative;
+  padding: 15px 0;
+}
+.history_container span::after {
+  position: absolute;
+  content: '';
+  left: 0;
+  bottom: 0;
+  right: -100px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
 }
