@@ -1,3 +1,15 @@
+.wrapper {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background: white;
+  margin-bottom: 100%;
+}
+.stickyTop {
+  margin-top: 124px;
+}
 .container {
   background: #d43c33;
   height: 84px;
@@ -14,7 +26,7 @@
   list-style: none;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgba(230, 230, 230, 0.8);
 }
 .tab li {
   position: relative;

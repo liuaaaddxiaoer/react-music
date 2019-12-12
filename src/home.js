@@ -26,7 +26,7 @@ class Tab extends Component {
 
   state = {
     tabs: ['推荐音乐', '热歌榜', '搜索'],
-    selectedIndex: 0, 
+    selectedIndex: 0,
   }
 
   selectedTab(index) {
@@ -87,8 +87,11 @@ class Home extends Component {
     console.log(`${this.props.match.path}/hot`)
     return (
       <>
-        <Header />
-        <Tab toggleTab={this.toggleTab.bind(this)} />
+        <div className={home.wrapper}>
+          <Header />
+          <Tab toggleTab={this.toggleTab.bind(this)} />
+        </div>
+        <div className={home.stickyTop}/>
         <Route path={this.props.match.path} exact component={Search}></Route>
         <Route path={`${this.props.match.path}/${this.state.items[1]}`} exact component={Hot}></Route>
         <Route path={`${this.props.match.path}/${this.state.items[0]}`} exact component={Recommend}></Route>

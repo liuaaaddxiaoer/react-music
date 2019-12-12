@@ -249,6 +249,8 @@ export default class Search extends React.Component {
     const search = e.target.value
     if (!search) return
     if (e.keyCode !== 13) return
+
+    window.open()
     // 存储
     // 判断是否有如果有合并
     this.storageHistory(search)
