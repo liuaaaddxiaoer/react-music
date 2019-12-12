@@ -76,6 +76,22 @@ class HotSearch extends React.Component {
     })
   }
 
+  clearHistory = (index) => {
+
+    const histories = this.state.histories.filter((value, i) => {
+      return i !== index
+    })
+
+    this.setState({
+      histories: histories
+    })
+
+    // 存入storage
+    const utils = this.$utils.storage
+    utils.setItem('history', JSON.stringify(histories))
+
+  }
+
   history() {
 
     const obj = (
@@ -83,16 +99,19 @@ class HotSearch extends React.Component {
       && (typeof this.state.histories.map === 'function')
       && this.state.histories.map((item, index) => {
         return (
-          <div className={style.history_container} key={index}>
+          <div
+            className={style.history_container}
+            key={index}>
             <i className="iconfont icon-shijian"></i>
             <span>{item}</span>
-            <i className="iconfont icon-guanbi" />
+            <i
+              className="iconfont icon-guanbi"
+              onClick={this.clearHistory.bind(this, index)}
+            />
           </div>
         )
       })
     )
-
-    console.log(obj)
 
     return obj
   }
@@ -122,7 +141,7 @@ class HotSearch extends React.Component {
         }
 
         {/* 历史记录 */}
-        {console.log('history is', typeof this.state.histories.map)}
+
         {
           this.history()
         }
@@ -250,7 +269,7 @@ export default class Search extends React.Component {
     if (!search) return
     if (e.keyCode !== 13) return
 
-    window.open()
+    window.open('http://localhost:3000/#/home')
     // 存储
     // 判断是否有如果有合并
     this.storageHistory(search)
