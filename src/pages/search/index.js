@@ -3,6 +3,31 @@ import style from './index.module.less'
 import PropTypes from 'prop-types'
 import Loading from '../../resources/images/loading.gif'
 
+class MatchSearch extends React.Component {
+
+  static propTypes = {
+    search: PropTypes.string.isRequired,
+    show: PropTypes.bool
+  }
+
+  static defaultProps = {
+    show: true
+  }
+
+  render() {
+    return (
+      <div
+        style={{ display: this.props.show ? 'flex' : 'none' }}
+      >
+        <div>
+          <h4>最佳匹配</h4>
+        </div>
+        <div></div>
+      </div>
+    )
+  }
+}
+
 class HotSearch extends React.Component {
 
   flag = 0
@@ -167,6 +192,7 @@ class KeywordSearch extends React.Component {
     show: true
   }
 
+
   componentDidUpdate(pre, stat) {
     if (this.props.search && this.props.search !== pre.search) {
       this.triggerSearch()
@@ -239,15 +265,21 @@ export default class Search extends React.Component {
     mode: 1
   }
 
+
+  inputRef = React.createRef()
+
   searchChange = (e) => {
+
+    this.search = e.target.value
+
     let mode = 1
-    if (e.target.value) {
+    if (this.search) {
       mode = 2
     }
 
     this.setState({
       mode: mode,
-      search: e.target.value || ''
+      search: this.search || ''
     })
   }
 
@@ -269,7 +301,6 @@ export default class Search extends React.Component {
     if (!search) return
     if (e.keyCode !== 13) return
 
-    window.open('http://localhost:3000/#/home')
     // 存储
     // 判断是否有如果有合并
     this.storageHistory(search)
@@ -278,6 +309,14 @@ export default class Search extends React.Component {
       mode: 3,
       search: search
     })
+  }
+
+  clearSearchResult = () => {
+    this.setState({
+      search: ''
+    })
+    this.inputRef.current.value = ''
+    this.inputRef.current.focus()
   }
 
   render() {
@@ -293,12 +332,18 @@ export default class Search extends React.Component {
             placeholder="搜索歌曲、歌手、专辑"
             onInput={this.searchChange}
             onKeyDown={this.searchSubmit}
+            value={this.search}
+            ref={this.inputRef}
           />
-          <i className="iconfont icon-guanbi1" style={{ display: this.state.search ? 'block' : 'none' }}></i>
+          <i
+            className="iconfont icon-guanbi1"
+            style={{ display: this.state.search ? 'block' : 'none' }}
+            onClick={this.clearSearchResult}
+          />
         </div>
         <HotSearch search={this.state.search} show={mode === 1} />
         <KeywordSearch search={this.state.search} show={mode === 2} />
-        <HotSearch search={this.state.search} show={mode === 3} />
+        <MatchSearch search={this.state.search} show={mode === 3} />
       </div>
     )
   }
